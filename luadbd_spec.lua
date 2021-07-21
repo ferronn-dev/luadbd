@@ -4,6 +4,17 @@ describe('luadbd', function()
     assert.Nil(parse(''))
   end)
   it('succeeds with no columns', function()
-    assert.same(8, parse('COLUMNS'))
+    local expected = {
+      columns = {},
+    }
+    assert.same(expected, parse('COLUMNS'))
+  end)
+  it('succeeds with one int column', function()
+    local expected = {
+      columns = {
+        { type = 'int', name = 'moocow' },
+      },
+    }
+    assert.same(expected, parse('COLUMNS int moocow'))
   end)
 end)
