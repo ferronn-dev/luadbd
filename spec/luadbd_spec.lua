@@ -1,9 +1,11 @@
 describe('luadbd', function()
   assert:set_parameter('TableFormatLevel', -1)
   local parse = require('luadbd').parse
+
   it('fails on empty string', function()
     assert.Nil(parse(''))
   end)
+
   it('succeeds with no columns', function()
     local expected = {
       columns = {},
@@ -11,6 +13,7 @@ describe('luadbd', function()
     }
     assert.same(expected, parse('COLUMNS\n'))
   end)
+
   it('succeeds with one int column', function()
     local expected = {
       columns = {
@@ -20,6 +23,7 @@ describe('luadbd', function()
     }
     assert.same(expected, parse('COLUMNS\nint moocow\n'))
   end)
+
   it('handles column comments', function()
     local expected = {
       columns = {
@@ -34,6 +38,7 @@ int moocow // comment 1
 string cowmoo // comment 2
 ]]))
   end)
+
   it('handles builds', function()
     local expected = {
       columns = {
@@ -85,6 +90,32 @@ string cowmoo
 BUILD 0.1.2.3
 cowmoo // This is a comment.
 cowmoo // This is also a comment.
+]]))
+  end)
+
+  it('handles layout and version comments', function()
+    local expected = {
+      columns = {
+        { type = 'string', name = 'cowmoo' },
+      },
+      versions = {
+        {
+          builds = { '0.1.2.3' },
+          columns = {
+            { name = 'cowmoo' },
+          },
+          layout = 'DE4D8EEF',
+        },
+      },
+    }
+    assert.same(expected, parse([[
+COLUMNS
+string cowmoo
+
+LAYOUT DE4D8EEF
+BUILD 0.1.2.3
+COMMENT roflcopter
+cowmoo
 ]]))
   end)
 end)
