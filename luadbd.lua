@@ -27,7 +27,7 @@ local dbd = Ct(
     Cg(Ct(version^0), 'versions') *
     -P(1))
 
-local parse = function(s)
+local function parse(s)
   return dbd:match(s)
 end
 
