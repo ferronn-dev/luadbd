@@ -7,7 +7,7 @@ describe('luadbd', function()
     local expected = {
       columns = {},
     }
-    assert.same(expected, parse('COLUMNS'))
+    assert.same(expected, parse('COLUMNS\n'))
   end)
   it('succeeds with one int column', function()
     local expected = {
@@ -15,6 +15,6 @@ describe('luadbd', function()
         { type = 'int', name = 'moocow' },
       },
     }
-    assert.same(expected, parse('COLUMNS int moocow'))
+    assert.same(expected, parse('COLUMNS\nint moocow\n'))
   end)
 end)
