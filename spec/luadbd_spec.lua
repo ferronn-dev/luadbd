@@ -62,4 +62,29 @@ BUILD 0.9.1.3810
 cowmoo
 ]]))
   end)
+
+  it('handles build column comments', function()
+    local expected = {
+      columns = {
+        { type = 'string', name = 'cowmoo' },
+      },
+      versions = {
+        {
+          builds = { '0.1.2.3' },
+          columns = {
+            { name = 'cowmoo' },
+            { name = 'cowmoo' },
+          },
+        },
+      },
+    }
+    assert.same(expected, parse([[
+COLUMNS
+string cowmoo
+
+BUILD 0.1.2.3
+cowmoo // This is a comment.
+cowmoo // This is also a comment.
+]]))
+  end)
 end)
