@@ -10,6 +10,7 @@ local column =
     lit(' ') *
     lpeg.Cg(sym, 'name') *
     lit('?')^-1 *
+    (lit(' // ') * (1 - lpeg.S('\n'))^0)^-1 *
     lit('\n'))
 local columns = lit('COLUMNS\n') * lpeg.Ct(column^0)
 local dbd = lpeg.Ct(lpeg.Cg(columns, 'columns') * -lpeg.P(1))

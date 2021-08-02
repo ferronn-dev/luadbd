@@ -17,4 +17,17 @@ describe('luadbd', function()
     }
     assert.same(expected, parse('COLUMNS\nint moocow\n'))
   end)
+  it('handles column comments', function()
+    local expected = {
+      columns = {
+        { type = 'int', name = 'moocow' },
+        { type = 'string', name = 'cowmoo' },
+      },
+    }
+    assert.same(expected, parse([[
+COLUMNS
+int moocow // comment 1
+string cowmoo // comment 2
+]]))
+  end)
 end)
