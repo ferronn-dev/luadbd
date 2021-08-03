@@ -129,7 +129,7 @@ cowmoo
           builds = { '0.1.2.3' },
           columns = {
             { name = 'moocow', size = 8 },
-            { name = 'moocow', size = 64 },
+            { name = 'moocow', size = 64, unsigned = true },
             { name = 'moocow', length = 42 },
             { name = 'moocow', size = 16, length = 2 },
             { name = 'moocow', annotations = { 'id' } },
@@ -145,7 +145,7 @@ int moocow
 
 BUILD 0.1.2.3
 moocow<8>
-moocow<64>
+moocow<u64>
 moocow[42]
 moocow<16>[2]
 $id$moocow

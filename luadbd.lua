@@ -16,10 +16,11 @@ local column = Ct(
 local build = P('BUILD ') * C((R('09') + S('.-, '))^0) * P('\n')
 local anno = P('id') + P('relation') + P('noninline')
 local num = (R('19') * R('09')^0) / tonumber
+local const = function(x) return function() return x end end
 local buildcol = Ct(
     Cg(P('$') * Ct(C(anno) * (P(',') * C(anno))^0) * P('$'), 'annotations')^-1 *
     Cg(sym, 'name') *
-    (P('<') * Cg(P('u'), 'unsigned')^-1 * Cg(num, 'size') * P('>'))^-1 *
+    (P('<') * Cg(P('u') / const(true), 'unsigned')^-1 * Cg(num, 'size') * P('>'))^-1 *
     (P('[') * Cg(num, 'length') * P(']'))^-1 *
     commenteol)
 local version = Ct(
