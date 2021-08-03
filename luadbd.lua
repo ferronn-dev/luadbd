@@ -14,7 +14,13 @@ local column = Ct(
     P('?')^-1 *
     commenteol)
 local build = P('BUILD ') * C((R('09') + S('.-, '))^0) * P('\n')
-local buildcol = Ct(Cg(sym, 'name') * commenteol)
+local anno = P('id') + P('relation') + P('noninline')
+local buildcol = Ct(
+    Cg(P('$') * Ct(C(anno) * (P(',') * C(anno))^0) * P('$'), 'annotations')^-1 *
+    Cg(sym, 'name') *
+    Cg(P('<') * C(R('09')^0) * P('>'), 'size')^-1 *
+    Cg(P('[') * C(R('09')^0) * P(']'), 'length')^-1 *
+    commenteol)
 local version = Ct(
     P('\n') *
     Cg(P('LAYOUT ') * C(R('09', 'AF')^8) * P('\n'), 'layout')^-1 *
