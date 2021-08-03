@@ -13,7 +13,8 @@ local column = Ct(
     Cg(sym, 'name') *
     P('?')^-1 *
     commenteol)
-local build = P('BUILD ') * C((R('09') + S('.-, '))^0) * P('\n')
+local build = (R('09') + S('.-'))^0
+local buildline = P('BUILD ') * C(build) * (P(', ') * C(build))^0 * P('\n')
 local anno = P('id') + P('relation') + P('noninline')
 local num = (R('19') * R('09')^0) / tonumber
 local const = function(x) return function() return x end end
@@ -27,7 +28,7 @@ local hash = R('09', 'AF')^8
 local version = Ct(
     P('\n') *
     Cg(P('LAYOUT ') * Ct(C(hash) * (P(', ') * C(hash))^0) * P('\n'), 'layout')^-1 *
-    Cg(Ct(build^0), 'builds') *
+    Cg(Ct(buildline^0), 'builds') *
     (P('COMMENT ') * skiptoeol * P('\n'))^-1 *
     Cg(Ct(buildcol^0), 'columns'))
 local dbd = Ct(
