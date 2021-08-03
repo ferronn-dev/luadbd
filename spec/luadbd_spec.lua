@@ -47,11 +47,11 @@ string cowmoo // comment 2
       versions = {
         {
           builds = {
-            '7.2.0.23436-7.2.0.23514',
-            '0.7.0.3694',
-            '0.7.1.3702',
-            '0.7.6.3712',
-            '0.9.1.3810',
+            { { 7, 2, 0, 23436 }, { 7, 2, 0, 23514 } },
+            { { 0, 7, 0, 3694 } },
+            { { 0, 7, 1, 3702 } },
+            { { 0, 7, 6, 3712 } },
+            { { 0, 9, 1, 3810 } },
           },
           columns = {
             { name = 'cowmoo' },
@@ -77,7 +77,9 @@ cowmoo
       },
       versions = {
         {
-          builds = { '0.1.2.3' },
+          builds = {
+            { { 0, 1, 2, 3 } },
+          },
           columns = {
             { name = 'cowmoo' },
             { name = 'cowmoo' },
@@ -102,7 +104,9 @@ cowmoo // This is also a comment.
       },
       versions = {
         {
-          builds = { '0.1.2.3' },
+          builds = {
+            { { 0, 1, 2, 3 } },
+          },
           columns = {
             { name = 'cowmoo' },
           },
@@ -128,7 +132,9 @@ cowmoo
       },
       versions = {
         {
-          builds = { '0.1.2.3' },
+          builds = {
+            { { 0, 1, 2, 3 } },
+          },
           columns = {
             { name = 'moocow', size = 8 },
             { name = 'moocow', size = 64, unsigned = true },

@@ -13,10 +13,11 @@ local column = Ct(
     Cg(sym, 'name') *
     P('?')^-1 *
     commenteol)
-local build = (R('09') + S('.-'))^0
-local buildline = P('BUILD ') * C(build) * (P(', ') * C(build))^0 * P('\n')
+local num = R('09')^1 / tonumber
+local onebuild = Ct(num * P('.') * num * P('.') * num * P('.') * num)
+local build = Ct(onebuild * (P('-') * onebuild)^-1)
+local buildline = P('BUILD ') * build * (P(', ') * build)^0 * P('\n')
 local anno = P('id') + P('relation') + P('noninline')
-local num = (R('19') * R('09')^0) / tonumber
 local const = function(x) return function() return x end end
 local buildcol = Ct(
     Cg(P('$') * Ct(C(anno) * (P(',') * C(anno))^0) * P('$'), 'annotations')^-1 *
