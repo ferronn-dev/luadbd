@@ -118,4 +118,39 @@ COMMENT roflcopter
 cowmoo
 ]]))
   end)
+
+  it('handles build column annotations', function()
+    local expected = {
+      columns = {
+        { type = 'int', name = 'moocow' },
+      },
+      versions = {
+        {
+          builds = { '0.1.2.3' },
+          columns = {
+            { name = 'moocow', size = '8' },
+            { name = 'moocow', size = '64' },
+            { name = 'moocow', length = '42' },
+            { name = 'moocow', size = '16', length = '2' },
+            { name = 'moocow', annotations = { 'id' } },
+            { name = 'moocow', length = '42', annotations = { 'id', 'noninline' } },
+            { name = 'moocow', size = '32', annotations = { 'relation' } },
+          },
+        },
+      },
+    }
+    assert.same(expected, parse([[
+COLUMNS
+int moocow
+
+BUILD 0.1.2.3
+moocow<8>
+moocow<64>
+moocow[42]
+moocow<16>[2]
+$id$moocow
+$id,noninline$moocow[42]
+$relation$moocow<32>
+]]))
+  end)
 end)
