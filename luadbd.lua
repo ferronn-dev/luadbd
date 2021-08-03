@@ -23,9 +23,10 @@ local buildcol = Ct(
     (P('<') * Cg(P('u') / const(true), 'unsigned')^-1 * Cg(num, 'size') * P('>'))^-1 *
     (P('[') * Cg(num, 'length') * P(']'))^-1 *
     commenteol)
+local hash = R('09', 'AF')^8
 local version = Ct(
     P('\n') *
-    Cg(P('LAYOUT ') * C(R('09', 'AF')^8) * P('\n'), 'layout')^-1 *
+    Cg(P('LAYOUT ') * Ct(C(hash) * (P(', ') * C(hash))^0) * P('\n'), 'layout')^-1 *
     Cg(Ct(build^0), 'builds') *
     (P('COMMENT ') * skiptoeol * P('\n'))^-1 *
     Cg(Ct(buildcol^0), 'columns'))
