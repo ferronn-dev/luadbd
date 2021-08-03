@@ -104,7 +104,7 @@ cowmoo // This is also a comment.
           columns = {
             { name = 'cowmoo' },
           },
-          layout = 'DE4D8EEF',
+          layout = { 'DE4D8EEF' },
         },
       },
     }

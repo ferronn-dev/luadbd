@@ -2,7 +2,7 @@ local lpeg = require('lpeg')
 local C, Cg, Ct, P, R, S = lpeg.C, lpeg.Cg, lpeg.Ct, lpeg.P, lpeg.R, lpeg.S
 
 local coltype = P('int') + P('string') + P('float') + P('locstring')
-local sym = R('az', 'AZ') * R('az', 'AZ', '09')^0
+local sym = R('az', 'AZ') * R('az', 'AZ', '09', '__')^0
 local fkey = P('<') * sym * P('::') * sym * P('>')
 local skiptoeol = (1 - S('\n'))^0
 local commenteol = (P(' // ') * skiptoeol)^-1 * P('\n')
