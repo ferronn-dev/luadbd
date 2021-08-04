@@ -212,6 +212,8 @@ float lol
 
 BUILD 0.1.2.3
 $id,noninline$moocow<16>
+$relation$moocow<16>
+$relation,noninline$moocow<8>
 moocow<32>
 moocow<64>
 moocow<u32>[5]
@@ -220,7 +222,7 @@ cowmoo
 wat
 lol
 ]])
-      assert.same('ii{5u}Lssf', dbd:dbcsig('0.1.2.3'))
+      assert.same('iFii{5u}Lssf', dbd:dbcsig('0.1.2.3'))
     end)
   end)
 end)

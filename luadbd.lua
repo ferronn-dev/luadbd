@@ -88,9 +88,11 @@ local function mksig(dcols, bcols)
   local sig = ''
   for _, bc in ipairs(bcols) do
     local isInline = true
+    local isRelation = false
     if bc.annotations then
       for _, a in ipairs(bc.annotations) do
         isInline = isInline and a ~= 'noninline'
+        isRelation = isRelation or a == 'relation'
       end
     end
     if isInline then
@@ -99,6 +101,8 @@ local function mksig(dcols, bcols)
         cs = '{' .. bc.length .. cs .. '}'
       end
       sig = sig .. cs
+    elseif isRelation then
+      sig = sig .. 'F'
     end
   end
   return sig
