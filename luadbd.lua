@@ -1,4 +1,9 @@
+local function dbcsig(dbd, buildNumber)
+  -- TODO lookup the correct build
+  return '???'
+end
 return {
+  dbcsig = dbcsig,
   parse = (function()
     local lpeg = require('lpeg')
     local C, Cg, Ct, P, R, S = lpeg.C, lpeg.Cg, lpeg.Ct, lpeg.P, lpeg.R, lpeg.S
@@ -38,8 +43,14 @@ return {
         Cg(Ct(column^0), 'columns') *
         Cg(Ct(version^0), 'versions') *
         -P(1))
+    local dbdMT = {
+      __index = {
+        dbcsig = dbcsig,
+      },
+    }
     return function(s)
-      return dbd:match(s)
+      local m = dbd:match(s)
+      return m and setmetatable(m, dbdMT) or nil
     end
   end)(),
 }
