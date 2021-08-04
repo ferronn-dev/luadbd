@@ -40,9 +40,30 @@ local dbd, onebuild = (function()
   return dbd, onebuild
 end)()
 
+local function bleq(a, b)
+  if a[1] < b[1] then
+    return true
+  elseif a[1] > b[1] then
+    return false
+  elseif a[2] < b[2] then
+    return true
+  elseif a[2] > b[2] then
+    return false
+  elseif a[3] < b[3] then
+    return true
+  elseif a[3] > b[3] then
+    return false
+  else
+    return a[4] <= b[4]
+  end
+end
+
 local function inBuildRange(br, b)
-  -- TODO implement
-  return false
+  if #br == 1 then
+    return bleq(br[1], b) and bleq(b, br[1])
+  else
+    return bleq(br[1], b) and bleq(b, br[2])
+  end
 end
 
 local function dbcsig(dbd, build)

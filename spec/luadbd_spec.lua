@@ -169,7 +169,22 @@ $relation$moocow<32>
     local dbcsig = require('luadbd').dbcsig
 
     it('returns null if no versions', function()
-      assert.Nil(dbcsig({ versions = {} }, '0.0.0.0'))
+      local dbd = { versions = {} }
+      assert.Nil(dbcsig(dbd, '0.0.0.0'))
+    end)
+
+    it('matches exact versions', function()
+      local dbd = {
+        versions = {
+          {
+            builds = {
+              { { 1, 1, 1, 1 } },
+            }
+          },
+        },
+      }
+      assert.Nil(dbcsig(dbd, '0.0.0.0'))
+      assert.Not.Nil(dbcsig(dbd, '1.1.1.1'))
     end)
   end)
 end)
