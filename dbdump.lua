@@ -54,11 +54,16 @@ for entry in require('lfs').dir(dir) do
         if not success then
           print('failed to get row iterator on ' .. tn)
         else
-          local rows = 0
-          for t in iterfn, iterdata do
-            rows = rows + 1
+          local itersuccess = pcall(function()
+            local rows = 0
+            for t in iterfn, iterdata do
+              rows = rows + 1
+            end
+            print(rows .. ' rows')
+          end)
+          if not itersuccess then
+            print('failed to iterate through ' .. tn)
           end
-          print(rows .. ' rows')
         end
       end
     end
