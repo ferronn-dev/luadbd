@@ -184,5 +184,22 @@ moocow<32>
       assert.Nil(dbd:dbcsig('0.0.0.0'))
       assert.same('i', dbd:dbcsig('0.1.2.3'))
     end)
+
+    it('matches version ranges', function()
+      local dbd = parse([[
+COLUMNS
+int moocow
+
+BUILD 0.1.2.3-0.1.2.5
+moocow<32>
+]])
+      assert.Nil(dbd:dbcsig('0.1.1.3'))
+      assert.Nil(dbd:dbcsig('0.1.2.2'))
+      assert.same('i', dbd:dbcsig('0.1.2.3'))
+      assert.same('i', dbd:dbcsig('0.1.2.4'))
+      assert.same('i', dbd:dbcsig('0.1.2.5'))
+      assert.Nil(dbd:dbcsig('0.1.2.6'))
+      assert.Nil(dbd:dbcsig('0.1.3.3'))
+    end)
   end)
 end)
