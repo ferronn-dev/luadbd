@@ -87,7 +87,7 @@ local function mksig(dcols, bcols)
   end
   local sig = ''
   for _, bc in ipairs(bcols) do
-    sig = sig .. colsig(bc, types[bc.name])
+    sig = sig .. string.rep(colsig(bc, types[bc.name]), bc.length or 1)
   end
   return sig
 end

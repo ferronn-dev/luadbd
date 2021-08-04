@@ -213,13 +213,13 @@ float lol
 BUILD 0.1.2.3
 moocow<32>
 moocow<64>
-moocow<u32>
+moocow<u32>[5]
 moocow<u64>
 cowmoo
 wat
 lol
 ]])
-      assert.same('iiuLssf', dbd:dbcsig('0.1.2.3'))
+      assert.same('iiuuuuuLssf', dbd:dbcsig('0.1.2.3'))
     end)
   end)
 end)
