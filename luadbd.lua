@@ -94,7 +94,11 @@ local function mksig(dcols, bcols)
       end
     end
     if not isID then
-      sig = sig .. string.rep(colsig(bc, types[bc.name]), bc.length or 1)
+      local cs = colsig(bc, types[bc.name])
+      if bc.length then
+        cs = '{' .. bc.length .. cs .. '}'
+      end
+      sig = sig .. cs
     end
   end
   return sig

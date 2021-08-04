@@ -220,7 +220,7 @@ cowmoo
 wat
 lol
 ]])
-      assert.same('iiuuuuuLssf', dbd:dbcsig('0.1.2.3'))
+      assert.same('ii{5u}Lssf', dbd:dbcsig('0.1.2.3'))
     end)
   end)
 end)
