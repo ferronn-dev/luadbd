@@ -166,13 +166,11 @@ $relation$moocow<32>
   end)
 
   describe('dbcsig', function()
-    local luadbd = require('luadbd')
-    local parse = luadbd.parse
-    local dbcsig = luadbd.dbcsig
+    local parse = require('luadbd').parse
 
     it('returns null if no versions', function()
       local dbd = parse('COLUMNS\n')
-      assert.Nil(dbcsig(dbd, '0.0.0.0'))
+      assert.Nil(dbd:dbcsig('0.0.0.0'))
     end)
 
     it('matches exact versions', function()
@@ -183,8 +181,8 @@ int moocow
 BUILD 0.1.2.3
 moocow<32>
 ]])
-      assert.Nil(dbcsig(dbd, '0.0.0.0'))
-      assert.same('?', dbcsig(dbd, '0.1.2.3'))
+      assert.Nil(dbd:dbcsig('0.0.0.0'))
+      assert.same('?', dbd:dbcsig('0.1.2.3'))
     end)
   end)
 end)

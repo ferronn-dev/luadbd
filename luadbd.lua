@@ -95,6 +95,5 @@ local function parse(s)
 end
 
 return {
-  dbcsig = dbcsig,
   parse = parse,
 }
