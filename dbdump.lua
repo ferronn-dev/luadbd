@@ -44,8 +44,6 @@ for entry in require('lfs').dir(dir) do
       local data = handle:readFile(dfid)
       if not data then
         print('no data for ' .. tn)
-      elseif tn == 'chrcreateclassanimtarget' or tn == 'helmetanimscaling' then
-        print('skipping ' .. tn)
       else
         print('reading '.. tn .. ':' .. sig .. ':' .. dfid)
         local success, iterfn, iterdata = pcall(function()
