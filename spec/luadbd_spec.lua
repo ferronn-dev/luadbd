@@ -211,6 +211,7 @@ locstring wat
 float lol
 
 BUILD 0.1.2.3
+$id$moocow<16>
 moocow<32>
 moocow<64>
 moocow<u32>[5]

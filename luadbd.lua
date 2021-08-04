@@ -87,7 +87,15 @@ local function mksig(dcols, bcols)
   end
   local sig = ''
   for _, bc in ipairs(bcols) do
-    sig = sig .. string.rep(colsig(bc, types[bc.name]), bc.length or 1)
+    local isID = false
+    if bc.annotations then
+      for _, a in ipairs(bc.annotations) do
+        isID = isID or a == 'id'
+      end
+    end
+    if not isID then
+      sig = sig .. string.rep(colsig(bc, types[bc.name]), bc.length or 1)
+    end
   end
   return sig
 end
