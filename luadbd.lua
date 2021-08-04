@@ -87,13 +87,13 @@ local function mksig(dcols, bcols)
   end
   local sig = ''
   for _, bc in ipairs(bcols) do
-    local isID = false
+    local isInline = true
     if bc.annotations then
       for _, a in ipairs(bc.annotations) do
-        isID = isID or a == 'id'
+        isInline = isInline and a ~= 'noninline'
       end
     end
-    if not isID then
+    if isInline then
       local cs = colsig(bc, types[bc.name])
       if bc.length then
         cs = '{' .. bc.length .. cs .. '}'
