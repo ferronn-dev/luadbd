@@ -169,7 +169,7 @@ $relation$moocow<32>
     local dbcsig = require('luadbd').dbcsig
 
     it('returns null if no versions', function()
-      assert.same('???', dbcsig({ versions = {} }))
+      assert.Nil(dbcsig({ versions = {} }, '0.0.0.0'))
     end)
   end)
 end)
