@@ -201,5 +201,25 @@ moocow<32>
       assert.Nil(dbd:dbcsig('0.1.2.6'))
       assert.Nil(dbd:dbcsig('0.1.3.3'))
     end)
+
+    it('matches all types', function()
+      local dbd = parse([[
+COLUMNS
+int moocow
+string cowmoo
+locstring wat
+float lol
+
+BUILD 0.1.2.3
+moocow<32>
+moocow<64>
+moocow<u32>
+moocow<u64>
+cowmoo
+wat
+lol
+]])
+      assert.same('iiuLssf', dbd:dbcsig('0.1.2.3'))
+    end)
   end)
 end)
