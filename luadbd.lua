@@ -66,9 +66,30 @@ local function inBuildRange(br, b)
   end
 end
 
+local function colsig(col, ty)
+  if ty == 'string' or ty == 'locstring' then
+    return 's'
+  elseif ty == 'float' then
+    return 'f'
+  elseif not col.unsigned then
+    return 'i'
+  elseif col.size == 64 then
+    return 'L'
+  else
+    return 'u'
+  end
+end
+
 local function mksig(dcols, bcols)
-  assert(dcols)
-  return string.rep('?', #bcols)
+  local types = {}
+  for _, dc in ipairs(dcols) do
+    types[dc.name] = dc.type
+  end
+  local sig = ''
+  for _, bc in ipairs(bcols) do
+    sig = sig .. colsig(bc, types[bc.name])
+  end
+  return sig
 end
 
 local function dbcsig(dbdef, build)

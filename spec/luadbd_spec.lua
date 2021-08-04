@@ -182,7 +182,7 @@ BUILD 0.1.2.3
 moocow<32>
 ]])
       assert.Nil(dbd:dbcsig('0.0.0.0'))
-      assert.same('?', dbd:dbcsig('0.1.2.3'))
+      assert.same('i', dbd:dbcsig('0.1.2.3'))
     end)
   end)
 end)
