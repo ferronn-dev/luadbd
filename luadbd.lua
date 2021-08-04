@@ -66,13 +66,17 @@ local function inBuildRange(br, b)
   end
 end
 
-local function dbcsig(dbd, build)
+local function mksig(dcols, bcols)
+  assert(dcols)
+  return string.rep('?', #bcols)
+end
+
+local function dbcsig(dbdef, build)
   local b = onebuild:match(build)
-  for _, version in ipairs(dbd.versions) do
+  for _, version in ipairs(dbdef.versions) do
     for _, br in ipairs(version.builds) do
       if inBuildRange(br, b) then
-        -- TODO deal with columns
-        return '???'
+        return mksig(dbdef.columns, version.columns)
       end
     end
   end
