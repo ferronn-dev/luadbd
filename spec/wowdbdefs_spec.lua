@@ -7,7 +7,11 @@ describe('luadbd wowdbdefs', function()
         local f = assert(io.open(dir .. '/' .. entry, 'r'))
         local s = f:read('*a')
         f:close()
-        assert.Not.Nil(parse(s))
+        local dbd = parse(s)
+        assert.Not.Nil(dbd)
+        assert.True(pcall(function()
+          dbd:dbcsig('9.1.0.38312')
+        end))
       end)
     end
   end
