@@ -31,12 +31,12 @@ local function colsig(col, ty)
     return 's'
   elseif ty == 'float' then
     return 'f'
-  elseif not col.unsigned then
-    return 'i'
   elseif col.size == 64 then
     return 'L'
-  else
+  elseif col.unsigned then
     return 'u'
+  else
+    return 'i'
   end
 end
 
