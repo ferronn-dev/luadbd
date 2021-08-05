@@ -50,9 +50,9 @@ for entry in require('lfs').dir(dir) do
           return require('dbc').rows(data, '{'..sig..'}')
         end)
         if not success then
-          print('failed to get row iterator on ' .. tn)
+          print('failed to get row iterator on ' .. tn .. ': ' .. iterfn)
         else
-          local itersuccess = pcall(function()
+          local itersuccess, err = pcall(function()
             local rows = 0
             for t in iterfn, iterdata do
               rows = rows + 1
@@ -60,7 +60,7 @@ for entry in require('lfs').dir(dir) do
             print(rows .. ' rows')
           end)
           if not itersuccess then
-            print('failed to iterate through ' .. tn)
+            print('failed to iterate through ' .. tn .. ': ' .. err)
           end
         end
       end
