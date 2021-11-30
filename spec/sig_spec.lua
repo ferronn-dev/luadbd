@@ -55,6 +55,6 @@ cowmoo
 wat
 lol
 ]])
-    assert.same('iFii{5u}Lssf', dbd:dbcsig('0.1.2.3'))
+    assert.same('iFiL{5u}Lssf', dbd:dbcsig('0.1.2.3'))
   end)
 end)
