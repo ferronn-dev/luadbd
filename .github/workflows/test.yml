@@ -1,0 +1,14 @@
+name: test
+on:
+  push:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: setup
+      run: bin/setup.sh
+    - name: test
+      run: bin/test.sh
