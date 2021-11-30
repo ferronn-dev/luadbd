@@ -1,7 +1,7 @@
 local db2s = {}
 local ndb2s = 0
 for line in io.lines('db2.txt') do
-  local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+)\.db2')
+  local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+).db2')
   assert(id, line)
   db2s[name] = tonumber(id)
   ndb2s = ndb2s + 1
@@ -54,7 +54,7 @@ for entry in require('lfs').dir(dir) do
         else
           local itersuccess, err = pcall(function()
             local rows = 0
-            for t in iterfn, iterdata do
+            for _ in iterfn, iterdata do
               rows = rows + 1
             end
             print(rows .. ' rows')

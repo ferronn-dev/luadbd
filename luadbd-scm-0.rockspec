@@ -9,9 +9,9 @@ dependencies = {
 }
 build = {
   type = 'none',
-  install = {
-    lua = {
-      luadbd = 'luadbd.lua',
-    },
+  modules = {
+    ['luadbd'] = 'src/luadbd/init.lua',
+    ['luadbd.parser'] = 'src/luadbd/parser.lua',
+    ['luadbd.sig'] = 'src/luadbd/sig.lua',
   },
 }
