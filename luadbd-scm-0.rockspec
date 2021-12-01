@@ -1,19 +1,26 @@
 rockspec_format = '3.0'
 package = 'luadbd'
 version = 'scm-0'
+description = {
+  summary = 'WoWDBDefs parser',
+  license = 'MIT',
+  homepage = 'https://github.com/lua-wow-tools/luadbd',
+  issues_url = 'https://github.com/lua-wow-tools/luadbd/issues',
+  maintainer = 'ferronn@ferronn.dev',
+  labels = {'wow'},
+}
 source = {
-  url = 'git://github.com/ferronn-dev/luadbd',
+  url = 'https://github.com/lua-wow-tools/luadbd/archive/refs/tags/vscm.tar.gz',
+  dir = 'luadbd-scm',
 }
 dependencies = {
   'lpeg',
-  'luacasc',
-  'luadbc',
 }
 build = {
   type = 'none',
   modules = {
-    ['luadbd'] = 'src/luadbd/init.lua',
-    ['luadbd.parser'] = 'src/luadbd/parser.lua',
-    ['luadbd.sig'] = 'src/luadbd/sig.lua',
+    ['luadbd'] = 'luadbd.lua',
+    ['luadbd.parser'] = 'luadbd/parser.lua',
+    ['luadbd.sig'] = 'luadbd/sig.lua',
   },
 }
