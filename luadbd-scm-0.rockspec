@@ -6,6 +6,8 @@ source = {
 }
 dependencies = {
   'lpeg',
+  'luacasc',
+  'luadbc',
 }
 build = {
   type = 'none',
