@@ -91,7 +91,7 @@ end
 if dbtoexport then
   process(dbtoexport, function(t)
     for _, f in ipairs(fieldstoexport) do
-      print(f .. ' = ' .. t[f])
+      print(f .. ' = ' .. tostring(t[f]))
     end
     print()
   end)

@@ -49,10 +49,12 @@ local function mksig(dcols, bcols)
   local fields = {}
   local idx = 1
   for _, bc in ipairs(bcols) do
+    local isID = false
     local isInline = true
     local isRelation = false
     if bc.annotations then
       for _, a in ipairs(bc.annotations) do
+        isID = isID or a == 'id'
         isInline = isInline and a ~= 'noninline'
         isRelation = isRelation or a == 'relation'
       end
@@ -69,6 +71,10 @@ local function mksig(dcols, bcols)
       sig = sig .. 'F'
       fields[bc.name] = idx
       idx = idx + 1
+    elseif isID then
+      fields[bc.name] = 0
+    else
+      error('invalid column')
     end
   end
   return sig, {
