@@ -1,3 +1,6 @@
+local product = arg[1] or 'wow'
+local dbtoexport = arg[2]
+
 local db2s = {}
 local ndb2s = 0
 for line in io.lines('db2.txt') do
@@ -10,7 +13,7 @@ print('loaded ' .. ndb2s .. ' db2 names')
 
 local handle, version = (function()
   local casc = require('casc')
-  local url = 'http://us.patch.battle.net:1119/' .. (arg[1] or 'wow')
+  local url = 'http://us.patch.battle.net:1119/' .. product
   local bkey, cdn, ckey, version = casc.cdnbuild(url, 'us')
   assert(bkey)
   print('loading ' .. version)
@@ -26,6 +29,7 @@ local handle, version = (function()
   return handle, version
 end)()
 
+local sigs = {}
 local dir = 'WoWDBDefs/definitions'
 for entry in require('lfs').dir(dir) do
   if entry:sub(-4) == '.dbd' then
@@ -40,30 +44,51 @@ for entry in require('lfs').dir(dir) do
     elseif not db2s[tn] then
       print('no datafileid for ' .. tn)
     else
-      local dfid = db2s[tn]
-      local data = handle:readFile(dfid)
-      if not data then
-        print('no data for ' .. tn)
-      else
-        print('reading '.. tn .. ':' .. sig .. ':' .. dfid)
-        local success, iterfn, iterdata = pcall(function()
-          return require('dbc').rows(data, '{'..sig..'}')
-        end)
-        if not success then
-          print('failed to get row iterator on ' .. tn .. ': ' .. iterfn)
-        else
-          local itersuccess, err = pcall(function()
-            local rows = 0
-            for _ in iterfn, iterdata do
-              rows = rows + 1
-            end
-            print(rows .. ' rows')
-          end)
-          if not itersuccess then
-            print('failed to iterate through ' .. tn .. ': ' .. err)
-          end
-        end
+      sigs[tn] = sig
+    end
+  end
+end
+
+local function process(tn, isDump)
+  local sig = sigs[tn]
+  local dfid = db2s[tn]
+  if not sig or not dfid then
+    print('cannot process ' .. tn)
+    return
+  end
+  local data = handle:readFile(dfid)
+  if not data then
+    print('no data for ' .. tn)
+    return
+  end
+  print('reading '.. tn .. ':' .. sig .. ':' .. dfid)
+  local success, iterfn, iterdata = pcall(function()
+    return require('dbc').rows(data, '{'..sig..'}')
+  end)
+  if not success then
+    print('failed to get row iterator on ' .. tn .. ': ' .. iterfn)
+    return
+  end
+  local itersuccess, err = pcall(function()
+    local rows = 0
+    for t in iterfn, iterdata do
+      rows = rows + 1
+      if isDump then
+        print(table.concat(t, ','))
       end
     end
+    print(rows .. ' rows')
+  end)
+  if not itersuccess then
+    print('failed to iterate through ' .. tn .. ': ' .. err)
+    return
+  end
+end
+
+if dbtoexport then
+  process(dbtoexport, true)
+else
+  for tn in pairs(sigs) do
+    process(tn, false)
   end
 end
