@@ -46,6 +46,8 @@ local function mksig(dcols, bcols)
     types[dc.name] = dc.type
   end
   local sig = ''
+  local fields = {}
+  local idx = 1
   for _, bc in ipairs(bcols) do
     local isInline = true
     local isRelation = false
@@ -61,11 +63,20 @@ local function mksig(dcols, bcols)
         cs = '{' .. bc.length .. cs .. '}'
       end
       sig = sig .. cs
+      fields[bc.name] = idx
+      idx = idx + 1
     elseif isRelation then
       sig = sig .. 'F'
+      fields[bc.name] = idx
+      idx = idx + 1
     end
   end
-  return sig
+  return sig, {
+    __index = function(t, k)
+      local i = fields[k]
+      return i and t[i] or nil
+    end,
+  }
 end
 
 local function dbcsig(dbdef, build)

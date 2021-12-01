@@ -1,5 +1,6 @@
 local product = arg[1] or 'wow'
 local dbtoexport = arg[2]
+local fieldstoexport = {select(3, unpack(arg))}
 
 local db2s = {}
 local ndb2s = 0
@@ -30,6 +31,7 @@ local handle, version = (function()
 end)()
 
 local sigs = {}
+local mts = {}
 local dir = 'WoWDBDefs/definitions'
 for entry in require('lfs').dir(dir) do
   if entry:sub(-4) == '.dbd' then
@@ -37,7 +39,7 @@ for entry in require('lfs').dir(dir) do
     local s = f:read('*a')
     f:close()
     local dbd = assert(require('luadbd').parse(s))
-    local sig = dbd:dbcsig(version)
+    local sig, mt = dbd:dbcsig(version)
     local tn = string.lower(entry:sub(1, -5))
     if not sig then
       print('no sig for ' .. tn)
@@ -45,14 +47,16 @@ for entry in require('lfs').dir(dir) do
       print('no datafileid for ' .. tn)
     else
       sigs[tn] = sig
+      mts[tn] = mt
     end
   end
 end
 
-local function process(tn, isDump)
+local function process(tn, cb)
   local sig = sigs[tn]
+  local mt = mts[tn]
   local dfid = db2s[tn]
-  if not sig or not dfid then
+  if not sig or not mt or not dfid then
     print('cannot process ' .. tn)
     return
   end
@@ -73,9 +77,8 @@ local function process(tn, isDump)
     local rows = 0
     for t in iterfn, iterdata do
       rows = rows + 1
-      if isDump then
-        print(table.concat(t, ','))
-      end
+      setmetatable(t, mt)
+      cb(t)
     end
     print(rows .. ' rows')
   end)
@@ -86,9 +89,14 @@ local function process(tn, isDump)
 end
 
 if dbtoexport then
-  process(dbtoexport, true)
+  process(dbtoexport, function(t)
+    for _, f in ipairs(fieldstoexport) do
+      print(f .. ' = ' .. t[f])
+    end
+    print()
+  end)
 else
   for tn in pairs(sigs) do
-    process(tn, false)
+    process(tn, function() end)
   end
 end
