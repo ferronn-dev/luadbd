@@ -10,7 +10,7 @@ print('loaded ' .. ndb2s .. ' db2 names')
 
 local handle, version = (function()
   local casc = require('casc')
-  local url = 'http://us.patch.battle.net:1119/wow'
+  local url = 'http://us.patch.battle.net:1119/' .. (arg[1] or 'wow')
   local bkey, cdn, ckey, version = casc.cdnbuild(url, 'us')
   assert(bkey)
   print('loading ' .. version)
