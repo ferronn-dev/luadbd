@@ -1,4 +1,3 @@
-local fetchHttp = require('ssl.https').request
 local lfs = require('lfs')
 
 local topLevelCacheDir = (function()
@@ -24,7 +23,7 @@ local cacheDir = (function()
   end
 end)()
 
-local function get(localname, url)
+local function get(localname, fn)
   if cacheDir then
     local cacheFile = cacheDir .. '/' .. localname
     if lfs.attributes(cacheFile, 'mode') == 'file' then
@@ -34,7 +33,7 @@ local function get(localname, url)
       return content
     end
   end
-  local content = fetchHttp(url)
+  local content = fn()
   if cacheDir then
     local cacheFile = cacheDir .. '/' .. localname
     local f = io.open(cacheFile, 'w')

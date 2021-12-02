@@ -1,3 +1,4 @@
+local fetchHttp = require('ssl.https').request
 local getCached = require('luadbd.cache').get
 
 local dbdMT = {
@@ -7,19 +8,21 @@ local dbdMT = {
   }
 }
 
-local db2s = {}
-do
-  local listfile = getCached('listfile.txt', 'https://wow.tools/casc/listfile/download/csv')
+local db2s = loadstring(getCached('db2.lua', function()
+  local out = { 'return {' }
+  local listfile = fetchHttp('https://wow.tools/casc/listfile/download/csv')
   for line in listfile:gmatch('[^\r\n]+') do
     local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+).db2')
     if id then
-      db2s[name] = tonumber(id)
+      table.insert(out, ('  [%q] = %d,'):format(name, id))
     end
   end
-end
+  table.insert(out, '}')
+  table.insert(out, '')
+  return table.concat(out, '\n')
+end))()
 
 local dbds = {}
-
 do
   local dir = 'WoWDBDefs/definitions'
   local dbdparse = require('luadbd.parser').dbd
