@@ -21,26 +21,35 @@ local db2s = loadstring(getCached('db2.lua', function()
   return 'return ' .. inspect(t)
 end))()
 
-local dbds = {}
-do
-  local dir = 'WoWDBDefs/definitions'
+local dbds = loadstring(getCached('dbd.lua', function()
+  local t = {}
+  local tmpname = os.tmpname()
+  local f = io.open(tmpname, 'w')
+  f:write((fetchHttp('https://codeload.github.com/wowdev/WoWDBDefs/zip/refs/heads/master')))
+  f:close()
   local dbdparse = require('luadbd.parser').dbd
-  for entry in require('lfs').dir(dir) do
-    if entry:sub(-4) == '.dbd' then
-      local tn = entry:sub(1, -5)
-      local ltn = string.lower(tn)
-      local fdid = db2s[ltn]
-      if fdid then
-        local f = assert(io.open(dir .. '/' .. entry, 'r'))
-        local s = f:read('*a')
-        f:close()
-        local dbd = assert(dbdparse(s), 'failed to parse ' .. entry)
-        dbd.name = tn
-        dbd.fdid = fdid
-        dbds[ltn] = setmetatable(dbd, dbdMT)
-        end
+  local z = require('zip').open(tmpname)
+  for zz in z:files() do
+    local tn = zz.filename:match('/definitions/(%a+).dbd')
+    if tn then
+      local zf = z:open(zz.filename)
+      local dbd = assert(dbdparse(zf:read('*a')))
+      zf:close()
+      dbd.name = tn
+      t[string.lower(tn)] = dbd
     end
   end
-end
+  z:close()
+  os.remove(tmpname)
+  return 'return ' .. inspect(t)
+end))()
 
-return dbds
+local ret = {}
+for tn, dbd in pairs(dbds) do
+  local fdid = db2s[tn]
+  if fdid then
+    dbd.fdid = fdid
+    ret[tn] = setmetatable(dbd, dbdMT)
+  end
+end
+return ret
