@@ -32,23 +32,15 @@ end)()
 
 local sigs = {}
 local mts = {}
-local dir = 'WoWDBDefs/definitions'
-for entry in require('lfs').dir(dir) do
-  if entry:sub(-4) == '.dbd' then
-    local f = assert(io.open(dir .. '/' .. entry, 'r'))
-    local s = f:read('*a')
-    f:close()
-    local dbd = assert(require('luadbd').parse(s))
-    local sig, mt = dbd:dbcsig(version)
-    local tn = string.lower(entry:sub(1, -5))
-    if not sig then
-      print('no sig for ' .. tn)
-    elseif not db2s[tn] then
-      print('no datafileid for ' .. tn)
-    else
-      sigs[tn] = sig
-      mts[tn] = mt
-    end
+for tn, dbd in pairs(require('luadbd.dbds')) do
+  local sig, mt = dbd:dbcsig(version)
+  if not sig then
+    print('no sig for ' .. tn)
+  elseif not db2s[tn] then
+    print('no datafileid for ' .. tn)
+  else
+    sigs[tn] = sig
+    mts[tn] = mt
   end
 end
 
