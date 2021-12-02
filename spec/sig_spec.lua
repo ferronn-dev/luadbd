@@ -1,7 +1,6 @@
 describe('dbcsig', function()
   local dbcsig = require('luadbd.sig').dbcsig
-  local matcher = require('luadbd.parser').dbd
-  local parse = function(...) return matcher:match(...) end
+  local parse = require('luadbd.parser').dbd
 
   it('returns null if no versions', function()
     local dbd = parse('COLUMNS\n')

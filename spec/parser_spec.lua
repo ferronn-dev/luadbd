@@ -1,7 +1,6 @@
 describe('parse', function()
   assert:set_parameter('TableFormatLevel', -1)
-  local matcher = require('luadbd.parser').dbd
-  local parse = function(...) return matcher:match(...) end
+  local parse = require('luadbd.parser').dbd
 
   it('fails on empty string', function()
     assert.Nil(parse(''))

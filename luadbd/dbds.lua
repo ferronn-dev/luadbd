@@ -16,7 +16,7 @@ do
       local f = assert(io.open(dir .. '/' .. entry, 'r'))
       local s = f:read('*a')
       f:close()
-      local dbd = assert(dbdparse:match(s), 'failed to parse ' .. entry)
+      local dbd = assert(dbdparse(s), 'failed to parse ' .. entry)
       dbds[tn] = setmetatable(dbd, dbdMT)
     end
   end

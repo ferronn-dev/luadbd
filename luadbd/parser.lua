@@ -37,7 +37,13 @@ local dbd = Ct(
     Cg(Ct(version^0), 'versions') *
     -P(1))
 
+local function wrap(matcher)
+  return function(...)
+    return matcher:match(...)
+  end
+end
+
 return {
-  dbd = dbd,
-  onebuild = onebuild,
+  dbd = wrap(dbd),
+  onebuild = wrap(onebuild),
 }

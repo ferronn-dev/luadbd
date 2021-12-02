@@ -86,7 +86,7 @@ local function mksig(dcols, bcols)
 end
 
 local function dbcsig(dbdef, build)
-  local b = onebuild:match(build)
+  local b = onebuild(build)
   for _, version in ipairs(dbdef.versions) do
     for _, br in ipairs(version.builds) do
       if inBuildRange(br, b) then
