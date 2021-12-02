@@ -30,7 +30,7 @@ local handle, version = (function()
   return handle, version
 end)()
 
-local dbds = require('luadbd.dbds')
+local dbds = require('luadbd').dbds
 
 local function process(tn, cb)
   local dbd = dbds[tn]
@@ -44,9 +44,9 @@ local function process(tn, cb)
     print('no data for ' .. tn)
     return
   end
-  print('reading '.. tn .. ':' .. dfid)
+  print('reading '.. tn .. ':' .. dbd:dbcsig(version) .. ':' .. dfid)
   local success, iterfn, iterdata = pcall(function()
-    return require('luadbd.dbcwrap')(dbd, version, data)
+    return dbd:rows(version, data)
   end)
   if not success then
     print('failed to get row iterator on ' .. tn .. ': ' .. iterfn)
