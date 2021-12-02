@@ -30,25 +30,12 @@ local handle, version = (function()
   return handle, version
 end)()
 
-local sigs = {}
-local mts = {}
-for tn, dbd in pairs(require('luadbd.dbds')) do
-  local sig, mt = dbd:dbcsig(version)
-  if not sig then
-    print('no sig for ' .. tn)
-  elseif not db2s[tn] then
-    print('no datafileid for ' .. tn)
-  else
-    sigs[tn] = sig
-    mts[tn] = mt
-  end
-end
+local dbds = require('luadbd.dbds')
 
 local function process(tn, cb)
-  local sig = sigs[tn]
-  local mt = mts[tn]
+  local dbd = dbds[tn]
   local dfid = db2s[tn]
-  if not sig or not mt or not dfid then
+  if not dbd or not dfid then
     print('cannot process ' .. tn)
     return
   end
@@ -57,9 +44,9 @@ local function process(tn, cb)
     print('no data for ' .. tn)
     return
   end
-  print('reading '.. tn .. ':' .. sig .. ':' .. dfid)
+  print('reading '.. tn .. ':' .. dfid)
   local success, iterfn, iterdata = pcall(function()
-    return require('dbc').rows(data, '{'..sig..'}')
+    return require('luadbd.dbcwrap')(dbd, version, data)
   end)
   if not success then
     print('failed to get row iterator on ' .. tn .. ': ' .. iterfn)
@@ -69,7 +56,6 @@ local function process(tn, cb)
     local rows = 0
     for t in iterfn, iterdata do
       rows = rows + 1
-      setmetatable(t, mt)
       cb(t)
     end
     print(rows .. ' rows')
@@ -88,7 +74,7 @@ if dbtoexport then
     print()
   end)
 else
-  for tn in pairs(sigs) do
+  for tn in pairs(dbds) do
     process(tn, function() end)
   end
 end
