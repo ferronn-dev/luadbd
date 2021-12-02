@@ -15,6 +15,7 @@ source = {
 }
 dependencies = {
   'datafile',
+  'inspect',
   'lpeg',
   'luadbc',
   'luafilesystem',

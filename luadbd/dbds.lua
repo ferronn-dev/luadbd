@@ -1,5 +1,6 @@
 local fetchHttp = require('ssl.https').request
 local getCached = require('luadbd.cache').get
+local inspect = require('inspect')
 
 local dbdMT = {
   __index = {
@@ -9,17 +10,15 @@ local dbdMT = {
 }
 
 local db2s = loadstring(getCached('db2.lua', function()
-  local out = { 'return {' }
+  local t = {}
   local listfile = fetchHttp('https://wow.tools/casc/listfile/download/csv')
   for line in listfile:gmatch('[^\r\n]+') do
     local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+).db2')
     if id then
-      table.insert(out, ('  [%q] = %d,'):format(name, id))
+      t[name] = tonumber(id)
     end
   end
-  table.insert(out, '}')
-  table.insert(out, '')
-  return table.concat(out, '\n')
+  return 'return ' .. inspect(t)
 end))()
 
 local dbds = {}
