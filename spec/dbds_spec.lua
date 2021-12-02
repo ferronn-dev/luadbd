@@ -3,6 +3,7 @@ describe('luadbd dbds', function()
   it('loads', function()
     assert(success, dbds)
   end)
+  assert(type(dbds) == 'table', tostring(dbds))
   for tn, dbd in pairs(dbds) do
     it('can sig ' .. tn, function()
       assert.True(pcall(function()

@@ -15,6 +15,7 @@ source = {
 }
 dependencies = {
   'lpeg',
+  'luadbc',
 }
 build = {
   type = 'none',
