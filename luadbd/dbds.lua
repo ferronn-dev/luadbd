@@ -1,3 +1,5 @@
+local getCached = require('luadbd.cache').get
+
 local dbdMT = {
   __index = {
     dbcsig = require('luadbd.sig').dbcsig,
@@ -6,10 +8,14 @@ local dbdMT = {
 }
 
 local db2s = {}
-for line in io.lines('db2.txt') do
-  local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+).db2')
-  assert(id, line)
-  db2s[name] = tonumber(id)
+do
+  local listfile = getCached('listfile.txt', 'https://wow.tools/casc/listfile/download/csv')
+  for line in listfile:gmatch('[^\r\n]+') do
+    local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+).db2')
+    if id then
+      db2s[name] = tonumber(id)
+    end
+  end
 end
 
 local dbds = {}

@@ -14,8 +14,11 @@ source = {
   dir = 'luadbd-scm',
 }
 dependencies = {
+  'datafile',
   'lpeg',
   'luadbc',
+  'luafilesystem',
+  'luasec',
 }
 build = {
   type = 'none',
