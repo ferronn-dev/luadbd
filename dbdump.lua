@@ -2,16 +2,6 @@ local product = arg[1] or 'wow'
 local dbtoexport = arg[2]
 local fieldstoexport = {select(3, unpack(arg))}
 
-local db2s = {}
-local ndb2s = 0
-for line in io.lines('db2.txt') do
-  local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+).db2')
-  assert(id, line)
-  db2s[name] = tonumber(id)
-  ndb2s = ndb2s + 1
-end
-print('loaded ' .. ndb2s .. ' db2 names')
-
 local handle, version = (function()
   local casc = require('casc')
   local url = 'http://us.patch.battle.net:1119/' .. product
@@ -32,19 +22,14 @@ end)()
 
 local dbds = require('luadbd').dbds
 
-local function process(tn, cb)
-  local dbd = dbds[tn]
-  local dfid = db2s[tn]
-  if not dbd or not dfid then
-    print('cannot process ' .. tn)
-    return
-  end
-  local data = handle:readFile(dfid)
+local function process(dbd, cb)
+  local tn = dbd.name
+  local data = handle:readFile(dbd.fdid)
   if not data then
     print('no data for ' .. tn)
     return
   end
-  print('reading '.. tn .. ':' .. dbd:dbcsig(version) .. ':' .. dfid)
+  print('reading '.. tn .. ':' .. dbd:dbcsig(version) .. ':' .. dbd.fdid)
   local success, iterfn, iterdata = pcall(function()
     return dbd:rows(version, data)
   end)
@@ -67,14 +52,14 @@ local function process(tn, cb)
 end
 
 if dbtoexport then
-  process(dbtoexport, function(t)
+  process(dbds[dbtoexport], function(t)
     for _, f in ipairs(fieldstoexport) do
       print(f .. ' = ' .. tostring(t[f]))
     end
     print()
   end)
 else
-  for tn in pairs(dbds) do
-    process(tn, function() end)
+  for _, dbd in pairs(dbds) do
+    process(dbd, function() end)
   end
 end
