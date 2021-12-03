@@ -28,12 +28,12 @@ local dbds = loadstring(getCached('dbd.lua', function()
   f:write((fetchHttp('https://codeload.github.com/wowdev/WoWDBDefs/zip/refs/heads/master')))
   f:close()
   local dbdparse = require('luadbd.parser').dbd
-  local z = require('zip').open(tmpname)
-  for zz in z:files() do
-    local tn = zz.filename:match('/definitions/(%a+).dbd')
+  local z = require('brimworks.zip').open(tmpname)
+  for i = 1, #z do
+    local tn = z:get_name(i):match('/definitions/(%a+).dbd')
     if tn then
-      local zf = z:open(zz.filename)
-      local dbd = assert(dbdparse(zf:read('*a')))
+      local zf = z:open(i)
+      local dbd = assert(dbdparse(zf:read(1e8)))
       zf:close()
       dbd.name = tn
       t[string.lower(tn)] = dbd

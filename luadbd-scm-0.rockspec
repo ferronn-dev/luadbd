@@ -20,7 +20,7 @@ dependencies = {
   'luadbc',
   'luafilesystem',
   'luasec',
-  'luazip',
+  'lua-zip',
 }
 build = {
   type = 'none',

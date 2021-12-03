@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: pre-setup
-      run: sudo apt-get install libzzip-dev
+      run: sudo apt-get install libzip-dev
     - name: setup
       run: bin/setup.sh
     - name: test
