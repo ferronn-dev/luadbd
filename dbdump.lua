@@ -29,7 +29,12 @@ local function process(dbd, cb)
     print('no data for ' .. tn)
     return
   end
-  print('reading '.. tn .. ':' .. dbd:dbcsig(version) .. ':' .. dbd.fdid)
+  local sig = dbd:dbcsig(version)
+  if not sig then
+    print('no signature for ' .. tn)
+    return
+  end
+  print('reading '.. tn .. ':' .. sig .. ':' .. dbd.fdid)
   local success, iterfn, iterdata = pcall(function()
     return dbd:rows(version, data)
   end)
