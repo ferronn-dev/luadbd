@@ -23,9 +23,12 @@ dependencies = {
   'lua-zip',
 }
 build = {
-  type = 'none',
+  type = 'builtin',
   modules = {
     ['luadbd'] = 'luadbd.lua',
+    ['luadbd.cache'] = 'luadbd/cache.lua',
+    ['luadbd.dbcwrap'] = 'luadbd/dbcwrap.lua',
+    ['luadbd.dbds'] = 'luadbd/dbds.lua',
     ['luadbd.parser'] = 'luadbd/parser.lua',
     ['luadbd.sig'] = 'luadbd/sig.lua',
   },
