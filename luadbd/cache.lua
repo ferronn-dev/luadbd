@@ -27,7 +27,7 @@ local function get(localname, fn)
   if cacheDir then
     local cacheFile = cacheDir .. '/' .. localname
     local attrs = lfs.attributes(cacheFile)
-    if attrs.mode == 'file' and os.difftime(os.time(), attrs.modification) < 60 * 60 * 4 then
+    if attrs and attrs.mode == 'file' and os.difftime(os.time(), attrs.modification) < 60 * 60 * 4 then
       local f = io.open(cacheFile, 'r')
       local content = f:read('*all')
       f:close()
