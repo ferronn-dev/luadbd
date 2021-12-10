@@ -49,12 +49,7 @@ local function mksig(dcols, bcols)
       error('invalid column')
     end
   end
-  return sig, {
-    __index = function(t, k)
-      local i = fields[k]
-      return i and t[i] or nil
-    end,
-  }
+  return sig, fields
 end
 
 local function dbcsig(dbdef, version)

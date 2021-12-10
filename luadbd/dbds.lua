@@ -58,7 +58,15 @@ for tn, dbd in pairs(dbds) do
     dbd.fdid = fdid
     ret[tn] = setmetatable(dbd, dbdMT)
     for _, version in ipairs(dbd.versions) do
-      version.sig, version.rowMT = dbcsig(dbd, version)
+      local sig, fields = dbcsig(dbd, version)
+      version.sig = sig
+      version.fields = fields
+      version.rowMT = {
+        __index = function(t, k)
+          local i = fields[k]
+          return i and t[i] or nil
+        end,
+      }
       setmetatable(version, buildMT)
     end
   end

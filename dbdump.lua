@@ -1,6 +1,5 @@
 local product = arg[1] or 'wow'
 local dbtoexport = arg[2]
-local fieldstoexport = {select(3, unpack(arg))}
 
 local handle, version = (function()
   local casc = require('casc')
@@ -46,7 +45,7 @@ local function process(dbd, cb)
     local rows = 0
     for t in iterfn, iterdata do
       rows = rows + 1
-      cb(t)
+      cb(build.fields, t)
     end
     print(rows .. ' rows')
   end)
@@ -57,9 +56,9 @@ local function process(dbd, cb)
 end
 
 if dbtoexport then
-  process(dbds[dbtoexport], function(t)
-    for _, f in ipairs(fieldstoexport) do
-      print(f .. ' = ' .. tostring(t[f]))
+  process(dbds[dbtoexport], function(fields, t)
+    for f, i in pairs(fields) do
+      print(f .. ' = ' .. tostring(t[i]))
     end
     print()
   end)
