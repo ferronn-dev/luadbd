@@ -2,7 +2,7 @@ local function colsig(col, ty)
   if ty == 'string' or ty == 'locstring' then
     return 's'
   elseif ty == 'float' then
-    return 'f'
+    return '.'  -- luadbc is sometimes broken on floats :(
   elseif col.size == 64 then
     return 'L'
   elseif col.unsigned then
