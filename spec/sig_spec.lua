@@ -1,6 +1,12 @@
 describe('dbcsig', function()
-  local dbcsig = require('luadbd.sig').dbcsig
+  local basesig = require('luadbd.sig')
+  local getVersion = require('luadbd.build')
   local parse = require('luadbd.parser').dbd
+
+  local function dbcsig(dbd, build)
+    local v = getVersion(dbd, build)
+    return v and basesig(dbd, v) or nil
+  end
 
   it('returns null if no versions', function()
     local dbd = parse('COLUMNS\n')

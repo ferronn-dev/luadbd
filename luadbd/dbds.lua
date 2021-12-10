@@ -1,12 +1,19 @@
+local dbcsig = require('luadbd.sig')
 local fetchHttp = require('ssl.https').request
 local getCached = require('luadbd.cache').get
 local inspect = require('inspect')
 
 local dbdMT = {
   __index = {
-    dbcsig = require('luadbd.sig').dbcsig,
-    rows = require('luadbd.dbcwrap'),
-  }
+    build = require('luadbd.build'),
+    rows = require('luadbd.dbcwrap').dbd,  -- TODO remove this
+  },
+}
+
+local buildMT = {
+  __index = {
+    rows = require('luadbd.dbcwrap').build,
+  },
 }
 
 local db2s = loadstring(getCached('db2.lua', function()
@@ -50,6 +57,10 @@ for tn, dbd in pairs(dbds) do
   if fdid then
     dbd.fdid = fdid
     ret[tn] = setmetatable(dbd, dbdMT)
+    for _, version in ipairs(dbd.versions) do
+      version.sig, version.rowMT = dbcsig(dbd, version)
+      setmetatable(version, buildMT)
+    end
   end
 end
 return ret

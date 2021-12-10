@@ -26,6 +26,7 @@ build = {
   type = 'builtin',
   modules = {
     ['luadbd'] = 'luadbd.lua',
+    ['luadbd.build'] = 'luadbd/build.lua',
     ['luadbd.cache'] = 'luadbd/cache.lua',
     ['luadbd.dbcwrap'] = 'luadbd/dbcwrap.lua',
     ['luadbd.dbds'] = 'luadbd/dbds.lua',

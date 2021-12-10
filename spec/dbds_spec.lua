@@ -5,9 +5,9 @@ describe('luadbd dbds', function()
   end)
   assert(type(dbds) == 'table', tostring(dbds))
   for tn, dbd in pairs(dbds) do
-    it('can sig ' .. tn, function()
+    it('can attempt to retrieve specific build in ' .. tn, function()
       assert.True(pcall(function()
-        dbd:dbcsig('9.1.0.38312')
+        dbd:build('9.1.0.38312')
       end))
     end)
   end
