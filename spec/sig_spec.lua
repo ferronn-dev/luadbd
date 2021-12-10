@@ -62,6 +62,6 @@ cowmoo
 wat
 lol
 ]])
-    assert.same('iFiL{5u}Lssf', dbcsig(dbd, '0.1.2.3'))
+    assert.same('iFiL{5u}Lss.', dbcsig(dbd, '0.1.2.3'))
   end)
 end)
