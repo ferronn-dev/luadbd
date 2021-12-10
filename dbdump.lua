@@ -57,10 +57,11 @@ end
 
 if dbtoexport then
   process(dbds[dbtoexport], function(fields, t)
+    local toprint = {}
     for f, i in pairs(fields) do
-      print(f .. ' = ' .. tostring(t[i]))
+      toprint[f] = t[i]
     end
-    print()
+    require('pl.pretty').dump(toprint)
   end)
 else
   for _, dbd in pairs(dbds) do
