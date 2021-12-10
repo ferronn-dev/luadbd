@@ -34,7 +34,11 @@ local function mksig(dcols, bcols)
     if isInline then
       local cs = colsig(bc, types[bc.name])
       if bc.length then
-        cs = '{' .. bc.length .. cs .. '}'
+        if cs == '.' then
+          cs = string.rep('.', bc.length)
+        else
+          cs = '{' .. bc.length .. cs .. '}'
+        end
       end
       sig = sig .. cs
       fields[bc.name] = idx
