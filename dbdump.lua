@@ -29,14 +29,14 @@ local function process(dbd, cb)
     print('no data for ' .. tn)
     return
   end
-  local sig = dbd:dbcsig(version)
-  if not sig then
-    print('no signature for ' .. tn)
+  local build = dbd:build(version)
+  if not build then
+    print('no build for ' .. tn)
     return
   end
-  print('reading '.. tn .. ':' .. sig .. ':' .. dbd.fdid)
+  print('reading '.. tn .. ':' .. build.sig .. ':' .. dbd.fdid)
   local success, iterfn, iterdata = pcall(function()
-    return dbd:rows(version, data)
+    return build:rows(data)
   end)
   if not success then
     print('failed to get row iterator on ' .. tn .. ': ' .. iterfn)
