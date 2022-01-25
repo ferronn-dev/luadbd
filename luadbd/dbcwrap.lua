@@ -9,14 +9,6 @@ local function rowsForBuild(version, data)
   return wrapfn, iterdata
 end
 
-local function rowsForDBD(dbd, build, data)  -- TODO remove this
-  local version = assert(
-      dbd:build(build),
-      ('no schema for dbd %s build %s'):format(dbd.name, build))
-  return rowsForBuild(version, data)
-end
-
 return {
   build = rowsForBuild,
-  dbd = rowsForDBD,
 }

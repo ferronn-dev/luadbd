@@ -6,7 +6,6 @@ local inspect = require('inspect')
 local dbdMT = {
   __index = {
     build = require('luadbd.build'),
-    rows = require('luadbd.dbcwrap').dbd,  -- TODO remove this
   },
 }
 
