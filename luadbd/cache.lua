@@ -2,8 +2,7 @@ local lfs = require('lfs')
 
 local topLevelCacheDir = (function()
   for _, opener in ipairs(require('datafile').openers) do
-    local dirs = opener.get_dirs('cache')
-    for _, dir in ipairs(dirs or {}) do
+    for _, dir in ipairs(opener.get_dirs and opener.get_dirs('cache') or {}) do
       if lfs.attributes(dir, 'mode') == 'directory' then
         return dir
       end
