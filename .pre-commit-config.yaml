@@ -1,0 +1,38 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.0.1
+  hooks:
+  - id: check-yaml
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+- repo: https://github.com/Calinou/pre-commit-luacheck
+  rev: v1.0.0
+  hooks:
+  - id: luacheck
+- repo: https://github.com/Lucas-C/pre-commit-hooks
+  rev: v1.1.13
+  hooks:
+  - id: remove-crlf
+  - id: forbid-tabs
+- repo: https://github.com/shellcheck-py/shellcheck-py
+  rev: v0.8.0.1
+  hooks:
+  - id: shellcheck
+    args:
+    - --shell=bash
+- repo: local
+  hooks:
+  - id: luarocks-lint
+    name: luarocks lint
+    entry: luarocks lint
+    files: .*\.rockspec
+    language: system
+  - id: luarocks-test
+    name: luarocks test
+    entry: luarocks test
+    language: system
+    pass_filenames: false
+- repo: meta
+  hooks:
+  - id: check-hooks-apply
+  - id: check-useless-excludes

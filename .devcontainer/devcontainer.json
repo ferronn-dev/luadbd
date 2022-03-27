@@ -1,0 +1,8 @@
+{
+  "name": "Debian",
+  "build": {
+    "dockerfile": "Dockerfile",
+  },
+  "postCreateCommand": "sudo luarocks install busted && sudo luarocks build --deps-only && pre-commit install && pre-commit run -a",
+  "remoteUser": "vscode"
+}
