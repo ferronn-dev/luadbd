@@ -3,6 +3,6 @@
   "build": {
     "dockerfile": "Dockerfile",
   },
-  "postCreateCommand": "sudo luarocks install busted && sudo luarocks build --deps-only && pre-commit install && pre-commit run -a",
+  "postCreateCommand": "pre-commit install --install-hooks",
   "remoteUser": "vscode"
 }
