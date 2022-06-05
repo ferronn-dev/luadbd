@@ -17,7 +17,8 @@ local buildMT = {
 
 local db2s = loadstring(getCached('db2.lua', function()
   local t = {}
-  local listfile = fetchHttp('https://wow.tools/casc/listfile/download/csv')
+  local listfile = fetchHttp('https://wow.tools/casc/listfile/download/csv/unverified')
+
   for line in listfile:gmatch('[^\r\n]+') do
     local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+).db2')
     if id then
