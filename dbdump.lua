@@ -33,7 +33,7 @@ local function process(dbd, cb)
     print('no build for ' .. tn)
     return
   end
-  print('reading '.. tn .. ':' .. build.sig .. ':' .. dbd.fdid)
+  print('reading ' .. tn .. ':' .. build.sig .. ':' .. dbd.fdid)
   local success, iterfn, iterdata = pcall(function()
     return build:rows(data)
   end)

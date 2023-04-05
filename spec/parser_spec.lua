@@ -32,11 +32,14 @@ describe('parse', function()
       },
       versions = {},
     }
-    assert.same(expected, parse([[
+    assert.same(
+      expected,
+      parse([[
 COLUMNS
 int moocow // comment 1
 string cowmoo // comment 2
-]]))
+]])
+    )
   end)
 
   it('handles builds', function()
@@ -59,7 +62,9 @@ string cowmoo // comment 2
         },
       },
     }
-    assert.same(expected, parse([[
+    assert.same(
+      expected,
+      parse([[
 COLUMNS
 string cowmoo
 
@@ -67,7 +72,8 @@ BUILD 7.2.0.23436-7.2.0.23514
 BUILD 0.7.0.3694, 0.7.1.3702, 0.7.6.3712
 BUILD 0.9.1.3810
 cowmoo
-]]))
+]])
+    )
   end)
 
   it('handles build column comments', function()
@@ -87,14 +93,17 @@ cowmoo
         },
       },
     }
-    assert.same(expected, parse([[
+    assert.same(
+      expected,
+      parse([[
 COLUMNS
 string cowmoo
 
 BUILD 0.1.2.3
 cowmoo // This is a comment.
 cowmoo // This is also a comment.
-]]))
+]])
+    )
   end)
 
   it('handles layout and version comments', function()
@@ -114,7 +123,9 @@ cowmoo // This is also a comment.
         },
       },
     }
-    assert.same(expected, parse([[
+    assert.same(
+      expected,
+      parse([[
 COLUMNS
 string cowmoo
 
@@ -122,7 +133,8 @@ LAYOUT DE4D8EEF
 BUILD 0.1.2.3
 COMMENT roflcopter
 cowmoo
-]]))
+]])
+    )
   end)
 
   it('handles build column annotations', function()
@@ -147,7 +159,9 @@ cowmoo
         },
       },
     }
-    assert.same(expected, parse([[
+    assert.same(
+      expected,
+      parse([[
 COLUMNS
 int moocow
 
@@ -159,6 +173,7 @@ moocow<16>[2]
 $id$moocow
 $id,noninline$moocow[42]
 $relation$moocow<32>
-]]))
+]])
+    )
   end)
 end)

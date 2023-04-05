@@ -1,5 +1,7 @@
 describe('luadbd dbds', function()
-  local success, dbds = pcall(function() return require('luadbd.dbds') end)
+  local success, dbds = pcall(function()
+    return require('luadbd.dbds')
+  end)
   it('loads', function()
     assert(success, dbds)
   end)
