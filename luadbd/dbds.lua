@@ -15,27 +15,26 @@ local buildMT = {
   },
 }
 
-local db2s = loadstring(getCached('db2.lua', function()
-  local t = {}
-  local listfile = fetchHttp('https://raw.githubusercontent.com/wowdev/wow-listfile/master/community-listfile.csv')
-
-  for line in listfile:gmatch('[^\r\n]+') do
-    local id, name = line:match('(%d+);dbfilesclient/([a-z0-9-_]+).db2')
-    if id then
-      t[name] = tonumber(id)
-    end
-  end
-  return 'return ' .. inspect(t)
-end))()
-
-local dbds = loadstring(getCached('dbd.lua', function()
-  local t = {}
+local db2s, dbds = loadstring(getCached('cache.lua', function()
   local tmpname = os.tmpname()
   local f = io.open(tmpname, 'w')
   f:write((fetchHttp('https://codeload.github.com/wowdev/WoWDBDefs/zip/refs/heads/master')))
   f:close()
   local dbdparse = require('luadbd.parser').dbd
   local z = require('brimworks.zip').open(tmpname)
+  local db2s = {}
+  do
+    local zf = z:open('WoWDBDefs-master/manifest.json')
+    local manifest = zf:read(1e8)
+    zf:close()
+    for _, e in ipairs(require('cjson').decode(manifest)) do
+      local id = e.db2FileDataID
+      if id then
+        db2s[e.tableName:lower()] = tonumber(id)
+      end
+    end
+  end
+  local dbds = {}
   for i = 1, #z do
     local tn = z:get_name(i):match('/definitions/(%a+).dbd')
     if tn then
@@ -43,12 +42,12 @@ local dbds = loadstring(getCached('dbd.lua', function()
       local dbd = assert(dbdparse(zf:read(1e8)))
       zf:close()
       dbd.name = tn
-      t[string.lower(tn)] = dbd
+      dbds[string.lower(tn)] = dbd
     end
   end
   z:close()
   os.remove(tmpname)
-  return 'return ' .. inspect(t)
+  return 'return ' .. inspect(db2s) .. ', ' .. inspect(dbds)
 end))()
 
 local ret = {}
